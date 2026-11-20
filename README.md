@@ -70,9 +70,8 @@ Open <http://localhost:8000>. Connection settings are in `web/includes/db_connec
 ## Notes
 
 - Credentials are development defaults (`root` / `root`) — change them before deploying anywhere.
-- `pages/citizen/register.php` stores the password as entered; it should use `password_hash()` /
-  `password_verify()`.
-- `index.php` uses `$pdo`, but `db_connect.php` creates `$conn`.
+- Passwords are stored with `password_hash()` and checked with `password_verify()`. Accounts created
+  before this change (plain-text passwords) still log in and are upgraded to a hash automatically.
 
 ## Team
 

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt = $conn->prepare("INSERT INTO users (username, password_hash, role, name, phone, latitude, longitude) 
                             VALUES (?, ?, 'citizen', ?, ?, ?, ?)");
     
-    $success = $stmt->execute([$username, $password, $name, $phone, $latitude, $longitude]);
+    $success = $stmt->execute([$username, password_hash($password, PASSWORD_DEFAULT), $name, $phone, $latitude, $longitude]);
 
     if ($success) {
         // Registration successful, redirect to login page

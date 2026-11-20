@@ -6,7 +6,7 @@ $response = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
-    $password = $_POST['password']; // Directly use the plain password
+    $password = $_POST['password'];
     $name = $_POST['name'];
     $phone = $_POST['phone'];
 
@@ -25,13 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetchColumn() > 0) {
                 $response['error'] = 'Username already exists.';
             } else {
-                // Insert new rescuer with plain password
+                // Insert new rescuer with hashed password
                 $stmt = $conn->prepare("
                     INSERT INTO users (username, password_hash, role, name, phone)
                     VALUES (:username, :password, 'rescuer', :name, :phone)
                 ");
                 $stmt->bindParam(':username', $username);
-                $stmt->bindParam(':password', $password); // Store plain password
+                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+                $stmt->bindParam(':password', $passwordHash);
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':phone', $phone);
                 $stmt->execute();

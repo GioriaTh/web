@@ -2,10 +2,10 @@
 // index.php
 
 // Include the database connection
-include '/web/includes/db_connect.php';
+include __DIR__ . '/includes/db_connect.php';
 
 // Example query to fetch categories
-$categories = $pdo->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
+$categories = $conn->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>

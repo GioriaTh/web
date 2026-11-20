@@ -16,8 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // Check if the password matches
-        if ($password === $user['password_hash']) {
+        // Check the password (hashed, or a legacy plain-text value that is upgraded on login)
+        $valid = password_verify($password, $user['password_hash']);
+        if (!$valid && hash_equals((string)$user['password_hash'], $password)) {
+            $valid = true;
+            $upd = $conn->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+            $upd->execute([password_hash($password, PASSWORD_DEFAULT), $user['id']]);
+        }
+        if ($valid) {
             // Successful login
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $user['role']; // Save the user's role in the session

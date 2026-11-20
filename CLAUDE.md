@@ -31,8 +31,8 @@ git fetch upstream && git merge upstream/main
 
 ## Known issues
 
-- `pages/citizen/register.php` stores plaintext passwords — use `password_hash()` / `password_verify()`.
-- `index.php` uses `$pdo`, `db_connect.php` defines `$conn`.
+- Passwords: always `password_hash()` on write, `password_verify()` on login (login.php also upgrades
+  legacy plain-text passwords — keep that until all old accounts have logged in once).
 - `.gitignore` is the Visual Studio template — not relevant to PHP; replace with a PHP/Docker one.
 
 ## Do not
